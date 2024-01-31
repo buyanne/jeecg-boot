@@ -1,4 +1,4 @@
-package org.jeecg.modules.demo.nl_assess_plan.entity;
+package org.jeecg.modules.demo.nl_employee_assess_management.nl_assess_plan.entity;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;

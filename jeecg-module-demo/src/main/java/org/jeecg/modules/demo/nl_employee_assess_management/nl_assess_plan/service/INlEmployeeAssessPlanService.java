@@ -1,6 +1,6 @@
-package org.jeecg.modules.demo.nl_assess_plan.service;
+package org.jeecg.modules.demo.nl_employee_assess_management.nl_assess_plan.service;
 
-import org.jeecg.modules.demo.nl_assess_plan.entity.NlEmployeeAssessPlan;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_assess_plan.entity.NlEmployeeAssessPlan;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

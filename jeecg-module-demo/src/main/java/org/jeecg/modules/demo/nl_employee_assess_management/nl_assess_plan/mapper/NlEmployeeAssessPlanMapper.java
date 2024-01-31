@@ -1,9 +1,6 @@
-package org.jeecg.modules.demo.nl_assess_plan.mapper;
+package org.jeecg.modules.demo.nl_employee_assess_management.nl_assess_plan.mapper;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-import org.jeecg.modules.demo.nl_assess_plan.entity.NlEmployeeAssessPlan;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_assess_plan.entity.NlEmployeeAssessPlan;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
