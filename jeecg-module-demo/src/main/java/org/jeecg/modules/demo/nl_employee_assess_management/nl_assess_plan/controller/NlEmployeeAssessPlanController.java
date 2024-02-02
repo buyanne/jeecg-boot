@@ -161,6 +161,7 @@ public class NlEmployeeAssessPlanController extends JeecgController<NlEmployeeAs
     public Result<?> importExcel(HttpServletRequest request, HttpServletResponse response) {
         return super.importExcel(request, response, NlEmployeeAssessPlan.class);
     }
+
     @AutoLog(value = "测评计划管理-通过id发布")
     @ApiOperation(value = "测评计划管理-通过id发布", notes = "测评计划管理-通过id发布")
     @RequestMapping(value = "/doReleaseData", method = RequestMethod.GET)
@@ -197,6 +198,7 @@ public class NlEmployeeAssessPlanController extends JeecgController<NlEmployeeAs
         }
         return result;
     }
+
 }
 
 

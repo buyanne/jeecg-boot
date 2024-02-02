@@ -43,7 +43,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
  * @Date:   2024-01-29
  * @Version: V1.0
  */
-@Api(tags="nl_specialist_info")
+@Api(tags="专家信息管理")
 @RestController
 @RequestMapping("/specialist/nlSpecialistInfo")
 @Slf4j
@@ -61,7 +61,7 @@ public class NlSpecialistInfoController extends JeecgController<NlSpecialistInfo
 	 * @return
 	 */
 	//@AutoLog(value = "nl_specialist_info-分页列表查询")
-	@ApiOperation(value="nl_specialist_info-分页列表查询", notes="nl_specialist_info-分页列表查询")
+	@ApiOperation(value="专家信息管理-分页列表查询", notes="nl_specialist_info-分页列表查询")
 	@GetMapping(value = "/list")
 	public Result<IPage<NlSpecialistInfo>> queryPageList(NlSpecialistInfo nlSpecialistInfo,
 								   @RequestParam(name="pageNo", defaultValue="1") Integer pageNo,
@@ -79,7 +79,7 @@ public class NlSpecialistInfoController extends JeecgController<NlSpecialistInfo
 	 * @param nlSpecialistInfo
 	 * @return
 	 */
-	@AutoLog(value = "nl_specialist_info-添加")
+	@AutoLog(value = "专家信息管理-添加")
 	@ApiOperation(value="nl_specialist_info-添加", notes="nl_specialist_info-添加")
 	@RequiresPermissions("specialist:nl_specialist_info:add")
 	@PostMapping(value = "/add")
@@ -94,7 +94,7 @@ public class NlSpecialistInfoController extends JeecgController<NlSpecialistInfo
 	 * @param nlSpecialistInfo
 	 * @return
 	 */
-	@AutoLog(value = "nl_specialist_info-编辑")
+	@AutoLog(value = "专家信息管理-编辑")
 	@ApiOperation(value="nl_specialist_info-编辑", notes="nl_specialist_info-编辑")
 	@RequiresPermissions("specialist:nl_specialist_info:edit")
 	@RequestMapping(value = "/edit", method = {RequestMethod.PUT,RequestMethod.POST})
@@ -109,7 +109,7 @@ public class NlSpecialistInfoController extends JeecgController<NlSpecialistInfo
 	 * @param id
 	 * @return
 	 */
-	@AutoLog(value = "nl_specialist_info-通过id删除")
+	@AutoLog(value = "专家信息管理-通过id删除")
 	@ApiOperation(value="nl_specialist_info-通过id删除", notes="nl_specialist_info-通过id删除")
 	@RequiresPermissions("specialist:nl_specialist_info:delete")
 	@DeleteMapping(value = "/delete")
@@ -124,7 +124,7 @@ public class NlSpecialistInfoController extends JeecgController<NlSpecialistInfo
 	 * @param ids
 	 * @return
 	 */
-	@AutoLog(value = "nl_specialist_info-批量删除")
+	@AutoLog(value = "专家信息管理-批量删除")
 	@ApiOperation(value="nl_specialist_info-批量删除", notes="nl_specialist_info-批量删除")
 	@RequiresPermissions("specialist:nl_specialist_info:deleteBatch")
 	@DeleteMapping(value = "/deleteBatch")
@@ -140,7 +140,7 @@ public class NlSpecialistInfoController extends JeecgController<NlSpecialistInfo
 	 * @return
 	 */
 	//@AutoLog(value = "nl_specialist_info-通过id查询")
-	@ApiOperation(value="nl_specialist_info-通过id查询", notes="nl_specialist_info-通过id查询")
+	@ApiOperation(value="专家信息管理-通过id查询", notes="nl_specialist_info-通过id查询")
 	@GetMapping(value = "/queryById")
 	public Result<NlSpecialistInfo> queryById(@RequestParam(name="id",required=true) String id) {
 		NlSpecialistInfo nlSpecialistInfo = nlSpecialistInfoService.getById(id);
