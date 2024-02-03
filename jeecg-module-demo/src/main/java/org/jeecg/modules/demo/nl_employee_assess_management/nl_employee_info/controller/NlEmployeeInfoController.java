@@ -92,7 +92,7 @@ public class NlEmployeeInfoController extends JeecgController<NlEmployeeInfo, IN
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<String> edit(@RequestBody NlEmployeeInfo nlEmployeeInfo) {
 
-        NlEmployeeInfo temp=nlEmployeeInfoService.getOne(new QueryWrapper<>(nlEmployeeInfo));
+        NlEmployeeInfo temp=nlEmployeeInfoService.getById(nlEmployeeInfo);
         if(temp!=null){
             nlEmployeeInfoService.updateById(nlEmployeeInfo);
             return Result.ok("编辑成功");
