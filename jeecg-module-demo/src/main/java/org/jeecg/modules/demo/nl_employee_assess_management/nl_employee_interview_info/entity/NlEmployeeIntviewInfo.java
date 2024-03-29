@@ -1,18 +1,14 @@
 package org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.entity;
 
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.math.BigDecimal;
+
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.jeecgframework.poi.excel.annotation.Excel;
-import org.jeecg.common.aspect.annotation.Dict;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
@@ -43,7 +39,7 @@ public class NlEmployeeIntviewInfo implements Serializable {
 	/**面试专家id*/
 	@Excel(name = "面试专家id", width = 15)
     @ApiModelProperty(value = "面试专家id")
-    private java.lang.Integer epecialistId;
+    private java.lang.Integer specialistId;
 	/**面试开始时间*/
 	@Excel(name = "面试开始时间", width = 20, format = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
