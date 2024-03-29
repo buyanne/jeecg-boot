@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 适岗能力初评
@@ -19,6 +20,10 @@ import java.util.List;
 @Repository
 public interface NlEmployeeReviewMapper extends BaseMapper<NlEmployeeReview> {
 
-    @Select("select review.* ,info.name from nl_employee_review review,nl_employee_info info where review.info_id=info.id and review.id= #{#d}")
-    Page<NlReviewVO> listReviewInfo(Integer id);
+    @Select("select review.* ,info.name from nl_employee_review review,nl_employee_info info where review.info_id=info.id")
+    Page<NlReviewVO> listReviewInfo();
+
+    Page<NlReviewVO> listReviewWithName(Page<NlReviewVO> page);
+
+    Page<NlReviewVO> getEmployeeReviewWithName(Page<NlReviewVO> page, Map<String,Object> params);
 }
