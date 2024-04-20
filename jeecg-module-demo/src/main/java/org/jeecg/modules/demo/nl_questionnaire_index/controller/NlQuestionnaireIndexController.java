@@ -1,28 +1,30 @@
 package org.jeecg.modules.demo.nl_questionnaire_index.controller;
 
-import java.util.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.modules.demo.nl_questionnaire_index.entity.NlQuestionnaireIndex;
-import org.jeecg.modules.demo.nl_questionnaire_index.service.INlQuestionnaireIndexService;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-
-import org.jeecg.modules.demo.nl_questionnaire_index.vo.IndexTreeVO;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.base.controller.JeecgController;
+import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.modules.demo.nl_questionnaire_db_choice_single.service.INlQuestionnaireDbChoiceSingleService;
+import org.jeecg.modules.demo.nl_questionnaire_index.entity.NlQuestionnaireIndex;
+import org.jeecg.modules.demo.nl_questionnaire_index.service.INlQuestionnaireIndexService;
+import org.jeecg.modules.demo.nl_questionnaire_index.vo.IndexTreeVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.jeecg.common.aspect.annotation.AutoLog;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * @Description: nl_questionnaire_index
@@ -37,6 +39,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class NlQuestionnaireIndexController extends JeecgController<NlQuestionnaireIndex, INlQuestionnaireIndexService> {
     @Autowired
     private INlQuestionnaireIndexService nlQuestionnaireIndexService;
+
 
     /**
      * 分页列表查询

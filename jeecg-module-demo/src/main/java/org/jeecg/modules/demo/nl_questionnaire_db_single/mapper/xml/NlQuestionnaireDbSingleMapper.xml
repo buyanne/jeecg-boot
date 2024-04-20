@@ -2,4 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.demo.nl_questionnaire_db_single.mapper.NlQuestionnaireDbSingleMapper">
 
+    <select id="getQuestionWithName"
+            resultType="org.jeecg.modules.demo.nl_questionnaire_db_single.vo.NlQuestionnaireSingleVO">
+        select
+        a.id, a.questionnaire_type, a.question_name, a.del_flag ,
+        b.index_name as questionnaire_index_name
+        from
+        nl_questionnaire_db_single as a,
+        nl_questionnaire_index as b
+        where a.questionnaire_type=b.id
+        <if test="params.questionnaireType!=null and params.questionnaireType!=''">
+            and a.questionnaire_type=#{params.questionnaireType}
+        </if>
+        <if test="params.questionName!=null and params.questionName!=''">
+            and a.question_name=#{params.questionName}
+        </if>
+        <if test="params.delFlag!=null and params.delFlag!=''">
+            and a.del_flag=#{params.delFlag}
+        </if>
+
+    </select>
 </mapper>
