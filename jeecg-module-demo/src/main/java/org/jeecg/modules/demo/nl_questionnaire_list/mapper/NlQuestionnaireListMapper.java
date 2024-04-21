@@ -1,10 +1,14 @@
 package org.jeecg.modules.demo.nl_questionnaire_list.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.demo.nl_questionnaire_list.entity.NlQuestionnaireList;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO;
 
 /**
  * @Description: 测评问卷生成
@@ -14,4 +18,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface NlQuestionnaireListMapper extends BaseMapper<NlQuestionnaireList> {
 
+    IPage<NlQuestionnaireListVO> getQuestionnairePage(Page<NlQuestionnaireListVO> page, HashMap<String, String> params);
 }

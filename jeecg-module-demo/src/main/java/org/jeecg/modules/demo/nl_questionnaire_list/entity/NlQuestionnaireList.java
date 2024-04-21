@@ -74,8 +74,8 @@ public class NlQuestionnaireList implements Serializable {
     private java.lang.Double totalScore;
 	/**问卷完成总时间*/
 	@Excel(name = "问卷完成总时间", width = 20, format = "yyyy-MM-dd HH:mm:ss")
-	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
-    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
+//	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
+//    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "问卷完成总时间")
     private java.util.Date totalTime;
 	/**问卷开始时间*/

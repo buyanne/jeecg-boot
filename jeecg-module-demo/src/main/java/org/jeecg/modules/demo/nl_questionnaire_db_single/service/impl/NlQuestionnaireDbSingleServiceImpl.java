@@ -94,6 +94,13 @@ public class NlQuestionnaireDbSingleServiceImpl extends ServiceImpl<NlQuestionna
     @Override
     @Transactional
     public void updateQuestion(NlQuestionnaireSingleVO questionVO) {
+        NlQuestionnaireDbSingle question =this.baseMapper.selectById(questionVO.getId());
+
+        question.setQuestionName(questionVO.getQuestionName());
+        question.setQuestionnaireType(questionVO.getQuestionnaireType());
+        question.setDelFlag(questionVO.getDelFlag());
+        this.baseMapper.updateById(question);
+
         String choices = questionVO.getChoiceList();
         Map<String, String> choiceMap = (Map<String, String>) JSON.parse(choices);
         nlQuestionnaireDbChoiceSingleMapper.deleteByQuestionId(String.valueOf(questionVO.getId()));

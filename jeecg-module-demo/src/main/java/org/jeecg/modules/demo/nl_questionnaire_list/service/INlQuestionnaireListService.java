@@ -1,7 +1,12 @@
 package org.jeecg.modules.demo.nl_questionnaire_list.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.modules.demo.nl_questionnaire_list.entity.NlQuestionnaireList;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO;
+
+import java.util.HashMap;
 
 /**
  * @Description: 测评问卷生成
@@ -11,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface INlQuestionnaireListService extends IService<NlQuestionnaireList> {
 
+    IPage<NlQuestionnaireListVO> getQuestionnairePage(Page<NlQuestionnaireListVO> page, HashMap<String, String> params);
 }
