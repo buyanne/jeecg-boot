@@ -4,14 +4,22 @@
 
     <select id="getQuestionnairePage"
             resultType="org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO">
-        select q_index.index_name,
-               plan.plan_name,
-               list.*
+        select
+        q_index.index_name,
+        plan.plan_name,
+        list.*
         from nl_questionnaire_list as list,
-             nl_questionnaire_index as q_index,
-             nl_employee_assess_plan as plan
-        where list.plan_id = plan.id
-          and list.questionnaire_type = q_index.id
+        nl_questionnaire_index as q_index,
+        nl_employee_assess_plan as plan
+        where
+        list.questionnaire_type=q_index.id
+        and list.plan_id = plan.id
+        <if test="params.questionnaireType!=null and params.questionnaireType!=''">
+            and list.questionnaire_type=#{params.questionnaireType}
+        </if>
+        <if test="params.questionTitle!=null and params.questionTitle!=''">
+            and list.question_title=#{params.questionTitle}
+        </if>
 
     </select>
 </mapper>

@@ -69,6 +69,8 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
                                                                HttpServletRequest req) {
 
         HashMap<String, String> params = new HashMap<>();
+        params.put("questionnaireType", req.getParameter("questionnaireType"));
+        params.put("questionTitle", req.getParameter("questionTitle"));
 
         Page<NlQuestionnaireListVO> page = new Page<>(pageNo, pageSize);
 
