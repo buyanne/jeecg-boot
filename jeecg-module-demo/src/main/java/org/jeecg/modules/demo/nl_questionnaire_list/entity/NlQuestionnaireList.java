@@ -77,7 +77,7 @@ public class NlQuestionnaireList implements Serializable {
 //	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
 //    @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @ApiModelProperty(value = "问卷完成总时间")
-    private java.util.Date totalTime;
+    private java.lang.String totalTime;
 	/**问卷开始时间*/
 	@Excel(name = "问卷开始时间", width = 20, format = "yyyy-MM-dd HH:mm:ss")
 	@JsonFormat(timezone = "GMT+8",pattern = "yyyy-MM-dd HH:mm:ss")
@@ -99,4 +99,6 @@ public class NlQuestionnaireList implements Serializable {
 	/**创建人id*/
     @ApiModelProperty(value = "创建人id")
     private java.lang.String createBy;
+
+    private java.lang.String questionType;
 }

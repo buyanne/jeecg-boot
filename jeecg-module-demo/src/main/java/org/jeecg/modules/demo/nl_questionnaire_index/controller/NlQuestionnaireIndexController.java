@@ -72,6 +72,42 @@ public class NlQuestionnaireIndexController extends JeecgController<NlQuestionna
 
     }
 
+    @GetMapping(value = "/getRootIndex")
+    public Result<List<IndexTreeVO>> queryRootIndex() {
+        List<NlQuestionnaireIndex> metaList = nlQuestionnaireIndexService.list();
+        List<IndexTreeVO> treeList = new ArrayList<>();
+        getTreeList(treeList, metaList);
+        List<IndexTreeVO> res = new ArrayList<>();
+        for (IndexTreeVO indexTreeVO : treeList) {
+            if (indexTreeVO.getParentId() == 0) {
+                res.add(indexTreeVO);
+            }
+        }
+        return Result.ok(res);
+    }
+
+    @GetMapping(value = "/getIndexByRoot")
+    public Result<List<IndexTreeVO>> queryIndexByRoot(HttpServletRequest req) {
+        String questionnaireType = req.getParameter("questionnaireType");
+        if (questionnaireType == null || questionnaireType.isEmpty()) {
+            return Result.ok();
+        }
+        Integer rootId = Integer.parseInt(questionnaireType);
+        List<IndexTreeVO> treeList = new ArrayList<>();
+        List<NlQuestionnaireIndex> mataList = nlQuestionnaireIndexService.list();
+        getTreeList(treeList, mataList);
+        List<IndexTreeVO> res = new ArrayList<>();
+        for (IndexTreeVO vo : treeList) {
+            //寻找vo的根节点
+            if (vo.getId().equals(rootId)) {
+                res.add(vo);
+                break;
+            }
+        }
+
+        return Result.ok(res);
+    }
+
 
     @GetMapping(value = "/list")
     public Result<List<IndexTreeVO>> queryPageList1(NlQuestionnaireIndex nlQuestionnaireIndex,
