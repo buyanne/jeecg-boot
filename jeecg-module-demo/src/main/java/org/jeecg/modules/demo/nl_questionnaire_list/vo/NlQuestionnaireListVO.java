@@ -26,7 +26,7 @@ public class NlQuestionnaireListVO implements Serializable {
     private java.lang.Double totalScore;
     private java.lang.String totalTime;
 
-    private java.lang.String questionType;
+    private java.lang.Integer questionType;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private java.util.Date questionStartTime;

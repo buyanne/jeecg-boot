@@ -2,6 +2,7 @@ package org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.se
 
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.entity.NlEmployeeInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.vo.EmployeeInfoVO;
 
 /**
  * @Description: 个体特征确认
@@ -11,4 +12,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface INlEmployeeInfoService extends IService<NlEmployeeInfo> {
 
+
+    EmployeeInfoVO getInfoByEmployeeIdWithName(String id);
 }

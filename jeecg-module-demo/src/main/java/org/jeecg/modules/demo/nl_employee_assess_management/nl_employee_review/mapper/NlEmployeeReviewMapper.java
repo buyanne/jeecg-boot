@@ -19,11 +19,5 @@ import java.util.Map;
  */
 @Repository
 public interface NlEmployeeReviewMapper extends BaseMapper<NlEmployeeReview> {
-
-    @Select("select review.* ,info.name from nl_employee_review review,nl_employee_info info where review.info_id=info.id")
-    Page<NlReviewVO> listReviewInfo();
-
-    Page<NlReviewVO> listReviewWithName(Page<NlReviewVO> page);
-
     Page<NlReviewVO> getEmployeeReviewWithName(Page<NlReviewVO> page, Map<String,Object> params);
 }

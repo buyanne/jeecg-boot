@@ -45,10 +45,6 @@ public class NlEmployeeInfo implements Serializable {
     @ApiModelProperty(value = "性别")
     private java.lang.Integer sex;
 
-    /**姓名*/
-    @Excel(name = "姓名", width = 15)
-    @ApiModelProperty(value = "姓名")
-    private java.lang.String name;
 	/**身份证号*/
 	@Excel(name = "身份证号", width = 15)
     @ApiModelProperty(value = "身份证号")
@@ -92,7 +88,7 @@ public class NlEmployeeInfo implements Serializable {
 	/**上传驾驶证相关证明材料*/
 	@Excel(name = "上传驾驶证相关证明材料", width = 15)
     @ApiModelProperty(value = "上传驾驶证相关证明材料")
-    private java.lang.String driverLicenseFileid;
+    private java.lang.String driverLicenseField;
 	/**所属企业*/
 	@Excel(name = "所属企业", width = 15)
     @ApiModelProperty(value = "所属企业")
@@ -108,7 +104,7 @@ public class NlEmployeeInfo implements Serializable {
 	/**上传船员证*/
 	@Excel(name = "上传船员证", width = 15)
     @ApiModelProperty(value = "上传船员证")
-    private java.lang.String driverQualificationFileid;
+    private java.lang.String driverQualificationField;
 	/**水上交通违法记录*/
 	@Excel(name = "水上交通违法记录", width = 15)
     @ApiModelProperty(value = "水上交通违法记录")
@@ -120,7 +116,7 @@ public class NlEmployeeInfo implements Serializable {
 	/**船员服务簿*/
 	@Excel(name = "船员服务簿", width = 15)
     @ApiModelProperty(value = "船员服务簿")
-    private java.lang.String recordBookFileid;
+    private java.lang.String recordBookField;
 	/**处理状态*/
 	@Excel(name = "处理状态", width = 15)
     @ApiModelProperty(value = "处理状态")

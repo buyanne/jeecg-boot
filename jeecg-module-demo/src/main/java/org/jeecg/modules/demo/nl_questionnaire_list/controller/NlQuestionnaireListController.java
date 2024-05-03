@@ -1,7 +1,9 @@
 package org.jeecg.modules.demo.nl_questionnaire_list.controller;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -89,7 +91,7 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
     @RequiresPermissions("nl_questionnaire_list:nl_questionnaire_list:add")
     @PostMapping(value = "/add")
     public Result<String> add(@RequestBody NlQuestionnaireList nlQuestionnaireList) {
-        nlQuestionnaireListService.save(nlQuestionnaireList);
+        nlQuestionnaireListService.saveWithRandomQuestion(nlQuestionnaireList);
         return Result.OK("添加成功！");
     }
 
@@ -104,7 +106,7 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
     @RequiresPermissions("nl_questionnaire_list:nl_questionnaire_list:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<String> edit(@RequestBody NlQuestionnaireList nlQuestionnaireList) {
-        nlQuestionnaireListService.updateById(nlQuestionnaireList);
+        nlQuestionnaireListService.updateWithQuestion(nlQuestionnaireList);
         return Result.OK("编辑成功!");
     }
 
@@ -119,7 +121,7 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
     @RequiresPermissions("nl_questionnaire_list:nl_questionnaire_list:delete")
     @DeleteMapping(value = "/delete")
     public Result<String> delete(@RequestParam(name = "id", required = true) String id) {
-        nlQuestionnaireListService.removeById(id);
+        nlQuestionnaireListService.removeByIdWithQuestion(id);
         return Result.OK("删除成功!");
     }
 
@@ -134,7 +136,9 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
     @RequiresPermissions("nl_questionnaire_list:nl_questionnaire_list:deleteBatch")
     @DeleteMapping(value = "/deleteBatch")
     public Result<String> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
-        this.nlQuestionnaireListService.removeByIds(Arrays.asList(ids.split(",")));
+        List<String> list = Arrays.asList(ids.split(","));
+        this.nlQuestionnaireListService.removeByIdsWithQuestion(list);
+//        this.nlQuestionnaireListService.removeByIds(Arrays.asList(ids.split(",")));
         return Result.OK("批量删除成功!");
     }
 

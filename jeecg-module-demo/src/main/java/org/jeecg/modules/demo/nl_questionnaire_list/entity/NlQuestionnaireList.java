@@ -100,5 +100,5 @@ public class NlQuestionnaireList implements Serializable {
     @ApiModelProperty(value = "创建人id")
     private java.lang.String createBy;
 
-    private java.lang.String questionType;
+    private java.lang.Integer questionType;
 }

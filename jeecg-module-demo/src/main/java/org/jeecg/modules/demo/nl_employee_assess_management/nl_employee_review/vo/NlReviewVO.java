@@ -13,6 +13,6 @@ public class NlReviewVO implements Serializable {
     private java.lang.Integer reviewType;
     private java.lang.Integer reviewResult;
 
-    private java.lang.String name;
+    private java.lang.String realname;
 
 }

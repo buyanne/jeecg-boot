@@ -58,30 +58,12 @@ public class NlEmployeeReviewController extends JeecgController<NlEmployeeReview
                                                    @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                    @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                                                    HttpServletRequest req) {
-        Map<String, String[]> parameterMap = req.getParameterMap();
         Map<String, Object> params = new HashMap<>();
-        String[] reviewResults = parameterMap.get("reviewResult");
-        if (reviewResults != null && reviewResults.length == 1) {
-            params.put("reviewResult", reviewResults[0]);
-        }
-
-        String[] names = parameterMap.get("name");
-        if (names != null && names.length == 1) {
-            params.put("name", names[0]);
-        }
+        params.put("reviewResult", req.getParameter("reviewResult"));
+        params.put("realname", req.getParameter("realname"));
 
         Page<NlReviewVO> pageList = nlEmployeeReviewService.listWithName(pageNo, pageSize, params);
         return Result.ok(pageList);
-    }
-
-    @GetMapping(value = "/listReviewInfo")
-    public Result<IPage<NlReviewVO>> listReviewInfo(NlEmployeeReview nlEmployeeReview,
-                                                    @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
-                                                    @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
-                                                    HttpServletRequest req) {
-        Result<IPage<NlReviewVO>> iPageResult = this.queryPageList(nlEmployeeReview, pageNo, pageSize, req);
-        Page<NlReviewVO> nlReviewVOPage = nlEmployeeReviewService.listReviewWithName(pageNo, pageSize, req.getParameterMap());
-        return Result.ok(nlReviewVOPage);
     }
 
     /**

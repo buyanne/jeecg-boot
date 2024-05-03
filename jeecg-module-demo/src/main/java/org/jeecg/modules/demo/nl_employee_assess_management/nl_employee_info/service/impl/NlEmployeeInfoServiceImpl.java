@@ -3,6 +3,7 @@ package org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.se
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.entity.NlEmployeeInfo;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.mapper.NlEmployeeInfoMapper;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.service.INlEmployeeInfoService;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.vo.EmployeeInfoVO;
 import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -16,4 +17,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 @Service
 public class NlEmployeeInfoServiceImpl extends ServiceImpl<NlEmployeeInfoMapper, NlEmployeeInfo> implements INlEmployeeInfoService {
 
+    @Override
+    public EmployeeInfoVO getInfoByEmployeeIdWithName(String employeeId) {
+        return this.baseMapper.getInfoByEmployeeIdWithName(employeeId);
+    }
 }

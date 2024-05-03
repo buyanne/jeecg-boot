@@ -24,18 +24,6 @@ import java.util.Map;
  */
 @Service
 public class NlEmployeeReviewServiceImpl extends ServiceImpl<NlEmployeeReviewMapper, NlEmployeeReview> implements INlEmployeeReviewService {
-
-    @Override
-    public Page<NlReviewVO> listReviewInfo() {
-        return baseMapper.listReviewInfo();
-    }
-
-    @Override
-    public Page<NlReviewVO> listReviewWithName(Integer pageNo, Integer pageSize, Map<String, String[]> parameterMap) {
-        Page<NlReviewVO> page = new Page<>(pageNo, pageSize);
-        return baseMapper.listReviewWithName(page);
-    }
-
     @Override
     public Page<NlReviewVO> listWithName(Integer pageNo, Integer pageSize, Map<String, Object> params) {
         Page<NlReviewVO> page = new Page<>(pageNo, pageSize);
