@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
+import java.util.List;
+
 /**
  * @Description: 思想状态回答表
  * @Author: jeecg-boot
@@ -16,4 +18,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 @Service
 public class NlEmployeePoliticsRequestReplyServiceImpl extends ServiceImpl<NlEmployeePoliticsRequestReplyMapper, NlEmployeePoliticsRequestReply> implements INlEmployeePoliticsRequestReplyService {
 
+    @Override
+    public List<NlEmployeePoliticsRequestReply> getByQuestionnaireIdAndEmployeeId(Integer listId, String employeeId) {
+        return this.baseMapper.getByQuestionnaireIdAndEmployeeId(listId,employeeId);
+    }
 }

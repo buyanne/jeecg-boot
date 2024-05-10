@@ -8,9 +8,13 @@ import java.net.URLDecoder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.common.util.oConvertUtils;
+import org.jeecg.modules.demo.nl_politics_reply.dto.ReplyParams;
+import org.jeecg.modules.demo.nl_politics_reply.dto.SelectedChoice;
 import org.jeecg.modules.demo.nl_politics_reply.entity.NlEmployeePoliticsRequestReply;
 import org.jeecg.modules.demo.nl_politics_reply.service.INlEmployeePoliticsRequestReplyService;
 
@@ -19,9 +23,15 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import lombok.extern.slf4j.Slf4j;
 
+import org.jeecg.modules.demo.nl_questionnaire_db_choice_single.entity.NlQuestionnaireDbChoiceSingle;
+import org.jeecg.modules.demo.nl_questionnaire_db_choice_single.service.INlQuestionnaireDbChoiceSingleService;
+import org.jeecg.modules.demo.nl_questionnaire_db_single.entity.NlQuestionnaireDbSingle;
+import org.jeecg.modules.demo.nl_questionnaire_db_single.service.INlQuestionnaireDbSingleService;
 import org.jeecg.modules.demo.nl_questionnaire_list.entity.NlQuestionnaireList;
 import org.jeecg.modules.demo.nl_questionnaire_list.service.INlQuestionnaireListService;
 import org.jeecg.modules.demo.nl_questionnaire_list.vo.QuestionVO;
+import org.jeecg.modules.demo.politics_single_score.entity.NlEmployeePoliticsSingleScore;
+import org.jeecg.modules.demo.politics_single_score.service.INlEmployeePoliticsSingleScoreService;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.def.NormalExcelConstants;
 import org.jeecgframework.poi.excel.entity.ExportParams;
@@ -56,8 +66,64 @@ public class NlEmployeePoliticsRequestReplyController extends JeecgController<Nl
     @Autowired
     private INlQuestionnaireListService questionnaireListService;
 
+
+    @Autowired
+    private INlQuestionnaireListService listService;
+
+    @Autowired
+    private INlQuestionnaireDbSingleService singleService;
+    @Autowired
+    private INlQuestionnaireDbChoiceSingleService choiceSingleService;
     private static final Integer POLITICS_TYPE = 4;
     private List<NlQuestionnaireList> list = null;
+
+    @Autowired
+    private INlEmployeePoliticsSingleScoreService scoreService;
+
+
+    @PostMapping(value = "saveReply")
+    public Result<String> saveReply(@RequestBody ReplyParams replyParams) {
+        List<SelectedChoice> questionList = replyParams.getQuestionList();
+
+        Integer listId = replyParams.getListId();
+//        System.out.println(listId);
+        NlQuestionnaireList questionnaireList = listService.getById(listId);
+        Double singleScore = questionnaireList.getSingleScore();
+
+//        保存提交记录
+        List<NlEmployeePoliticsRequestReply> saveList = new ArrayList<>();
+        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        for (SelectedChoice selectedChoice : questionList) {
+            NlEmployeePoliticsRequestReply reply = new NlEmployeePoliticsRequestReply();
+            reply.setEmployeeId(loginUser.getId());
+            reply.setQuestionnaireId(replyParams.getListId());
+            Integer questionId = selectedChoice.getQuestionId();
+            reply.setQuestionId(questionId);
+            Integer selectedChoiceId = selectedChoice.getSelectedChoice();
+            reply.setAnswerId(selectedChoiceId);
+            NlQuestionnaireDbChoiceSingle choiceById = choiceSingleService.getById(selectedChoiceId);
+            Double choiceScoreWeight = choiceById.getChoiceScoreWeight();
+            reply.setScore(singleScore * choiceScoreWeight);
+            saveList.add(reply);
+        }
+        nlEmployeePoliticsRequestReplyService.saveBatch(saveList);
+//        for (NlEmployeePoliticsRequestReply reply : saveList) {
+//            System.out.println(reply);
+//        }
+//        保存得分情况
+        double sumOfScore = 0.0f;
+        for (NlEmployeePoliticsRequestReply reply : saveList) {
+            sumOfScore += reply.getScore();
+        }
+        NlEmployeePoliticsSingleScore score = new NlEmployeePoliticsSingleScore();
+        score.setEmployeeId(loginUser.getId());
+        score.setQuestionScore(sumOfScore);
+        score.setSubmitTime(new Date());
+        score.setQuestionnaireId(listId);
+        scoreService.save(score);
+
+        return Result.ok();
+    }
 
     @ApiOperation(value = "测评问卷生成-预览题目列表", notes = "测评问卷生成-预览题目列表")
     @GetMapping(value = "queryPoliticsQuestionnaire")
@@ -72,11 +138,18 @@ public class NlEmployeePoliticsRequestReplyController extends JeecgController<Nl
                 break;
             }
         }
-        if (res == null) {
-            return Result.error("没有对应数据");
-        } else {
-            return Result.ok(res);
+
+//        res = null;
+        //        todo 需要查reply的得分情况，如果有就返回null，否则返回res
+        Integer listId1 = res.getId();
+        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        String employeeId = loginUser.getId();
+        List<NlEmployeePoliticsRequestReply> byQuestionnaireIdAndEmployeeId = this.nlEmployeePoliticsRequestReplyService.getByQuestionnaireIdAndEmployeeId(listId1, employeeId);
+        if (!byQuestionnaireIdAndEmployeeId.isEmpty()) {
+            res = null;
         }
+
+        return Result.ok(res);
     }
 
 
