@@ -3,6 +3,8 @@ package org.jeecg.modules.demo.nl_pyschology_reply.service;
 import org.jeecg.modules.demo.nl_pyschology_reply.entity.NlEmployeePyschologyRequestReply;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @Description: 心理状况回答表
  * @Author: jeecg-boot
@@ -11,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface INlEmployeePyschologyRequestReplyService extends IService<NlEmployeePyschologyRequestReply> {
 
+    List<NlEmployeePyschologyRequestReply> getByQuestionnaireIdAndEmployeeId(Integer listId1, String employeeId);
 }

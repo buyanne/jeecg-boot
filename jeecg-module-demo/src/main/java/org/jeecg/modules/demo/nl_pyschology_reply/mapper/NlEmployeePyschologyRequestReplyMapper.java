@@ -14,4 +14,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface NlEmployeePyschologyRequestReplyMapper extends BaseMapper<NlEmployeePyschologyRequestReply> {
 
+    List<NlEmployeePyschologyRequestReply> getByQuestionnaireIdAndEmployeeId(Integer listId, String employeeId);
 }

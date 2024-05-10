@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.jeecg.modules.demo.nl_pyschology_reply.mapper.NlEmployeePyschologyRequestReplyMapper">
+<mapper namespace="org.jeecg.modules.demo.sleep_reply.mapper.NlEmployeeSleepRequestReplyMapper">
 
     <select id="getByQuestionnaireIdAndEmployeeId"
-            resultType="org.jeecg.modules.demo.nl_pyschology_reply.entity.NlEmployeePyschologyRequestReply">
+            resultType="org.jeecg.modules.demo.sleep_reply.entity.NlEmployeeSleepRequestReply">
         select *
-        from nl_employee_pyschology_request_reply
+        from nl_employee_sleep_request_reply
         where questionnaire_id = #{listId}
           and employee_id = #{employeeId}
     </select>

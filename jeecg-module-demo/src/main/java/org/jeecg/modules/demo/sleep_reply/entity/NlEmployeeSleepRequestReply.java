@@ -1,4 +1,4 @@
-package org.jeecg.modules.demo.nl_pyschology_reply.entity;
+package org.jeecg.modules.demo.sleep_reply.entity;
 
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
@@ -19,17 +19,17 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 /**
- * @Description: 心理状况回答表
+ * @Description: 睡眠质量测评
  * @Author: jeecg-boot
- * @Date:   2024-05-10
+ * @Date:   2024-05-11
  * @Version: V1.0
  */
 @Data
-@TableName("nl_employee_pyschology_request_reply")
+@TableName("nl_employee_sleep_request_reply")
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value="nl_employee_pyschology_request_reply对象", description="心理状况回答表")
-public class NlEmployeePyschologyRequestReply implements Serializable {
+@ApiModel(value="nl_employee_sleep_request_reply对象", description="睡眠质量测评")
+public class NlEmployeeSleepRequestReply implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	/**id*/
