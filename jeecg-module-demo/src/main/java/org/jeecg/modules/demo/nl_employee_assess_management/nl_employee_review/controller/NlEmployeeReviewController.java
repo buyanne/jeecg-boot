@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.service.INlEmployeeInfoService;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.vo.EmployeeInfoVO;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_review.entity.NlEmployeeReview;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_review.mapper.NlEmployeeReviewMapper;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_review.service.INlEmployeeReviewService;
@@ -41,6 +43,9 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class NlEmployeeReviewController extends JeecgController<NlEmployeeReview, INlEmployeeReviewService> {
     @Autowired
     private INlEmployeeReviewService nlEmployeeReviewService;
+
+    @Autowired
+    private INlEmployeeInfoService infoService;
 
     /**
      * 分页列表查询
@@ -84,15 +89,23 @@ public class NlEmployeeReviewController extends JeecgController<NlEmployeeReview
     /**
      * 编辑
      *
-     * @param nlEmployeeReview
+     * @param employeeInfoVO
      * @return
      */
     @AutoLog(value = "适岗能力初评-编辑")
     @ApiOperation(value = "适岗能力初评-编辑", notes = "适岗能力初评-编辑")
     @RequiresPermissions("nl_employee_review:nl_employee_review:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody NlEmployeeReview nlEmployeeReview) {
-        nlEmployeeReviewService.updateById(nlEmployeeReview);
+    public Result<String> edit(@RequestBody EmployeeInfoVO employeeInfoVO) {
+//        System.out.println("nihao");
+        String employeeId = employeeInfoVO.getEmployeeId();
+        EmployeeInfoVO infoByEmployeeId = infoService.getInfoByEmployeeIdWithName(employeeId);
+        NlEmployeeReview review = new NlEmployeeReview();
+        review.setInfoId(infoByEmployeeId.getId());
+        review.setReviewMsg(employeeInfoVO.getHandleOpinions());
+        review.setReviewResult(1);
+        nlEmployeeReviewService.updateByInfoId(review);
+//        review.setInfoId(employeeInfoVO.getEmployeeId())
         return Result.OK("编辑成功!");
     }
 

@@ -19,4 +19,6 @@ import java.util.Map;
  */
 public interface INlEmployeeReviewService extends IService<NlEmployeeReview> {
     Page<NlReviewVO> listWithName(Integer pageNo, Integer pageSize, Map<String, Object> params);
+
+    void updateByInfoId(NlEmployeeReview review);
 }

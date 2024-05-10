@@ -2,6 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.demo.nl_questionnaire_list.mapper.NlQuestionnaireListMapper">
 
+    <resultMap id="questionMap" type="org.jeecg.modules.demo.nl_questionnaire_list.vo.QuestionVO">
+        <result property="id" column="id"/>
+        <result property="questionName" column="question_name"/>
+        <collection property="choiceList" javaType="java.util.List" ofType="org.jeecg.modules.demo.nl_questionnaire_list.dto.ChoiceDTO">
+            <result property="questionId" column="question_id"/>
+            <result property="choiceContent" column="choice_content"/>
+            <result property="choiceScoreWeight" column="choice_score_weight"/>
+            <result property="id" column="choice_id"/>
+        </collection>
+    </resultMap>
     <select id="getQuestionnairePage"
             resultType="org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO">
         select
@@ -21,5 +31,21 @@
             and list.question_title=#{params.questionTitle}
         </if>
 
+    </select>
+    <select id="getQuestionByListId" resultMap="questionMap">
+        select single.id as `id`,
+               single.question_name,
+               single.id as question_id,
+               choice_single.id as choice_id,
+               choice_single.choice_content,
+               choice_single.choice_score_weight
+        from nl_questionnaire_list as list,
+             nl_questionnaire_list_single as list_single,
+             nl_questionnaire_db_single as single,
+             nl_questionnaire_db_choice_single as choice_single
+        where list.id = list_single.list_id
+          and list_single.questionnaire_id = single.id
+          and single.id = choice_single.question_id
+          and list.id = #{listId}
     </select>
 </mapper>

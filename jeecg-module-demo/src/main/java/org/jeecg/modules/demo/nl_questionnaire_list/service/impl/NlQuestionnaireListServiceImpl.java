@@ -12,6 +12,7 @@ import org.jeecg.modules.demo.nl_questionnaire_list.entity.NlQuestionnaireList;
 import org.jeecg.modules.demo.nl_questionnaire_list.mapper.NlQuestionnaireListMapper;
 import org.jeecg.modules.demo.nl_questionnaire_list.service.INlQuestionnaireListService;
 import org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO;
+import org.jeecg.modules.demo.nl_questionnaire_list.vo.QuestionVO;
 import org.jeecg.modules.demo.nl_questionnaire_list_single.entity.NlQuestionnaireListSingle;
 import org.jeecg.modules.demo.nl_questionnaire_list_single.service.impl.NlQuestionnaireListSingleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -359,5 +360,10 @@ public class NlQuestionnaireListServiceImpl extends ServiceImpl<NlQuestionnaireL
         for (String id : ids) {
             this.removeByIdWithQuestion(id);
         }
+    }
+
+    @Override
+    public List<QuestionVO> getQuestionByListId(String listId) {
+        return this.baseMapper.getQuestionByListId(listId);
     }
 }

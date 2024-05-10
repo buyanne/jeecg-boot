@@ -2,16 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.mapper.NlEmployeeIntviewInfoMapper">
     <select id="listWithName" resultType="org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.vo.SpecialistInterviewVO">
-        select
-            a.id,
-            a.employee_id,
-            a.specialist_id ,
-            b.name as `name` ,
-            c.name as `specialistName`,
-            a.interviewer_start_time,
-            a.interviewer_end_time,
-            a.interview_place
-        from nl_employee_intview_info as a ,nl_employee_info b,nl_specialist_info  c
-        where a.employee_id=b.employee_id and a.specialist_id=c.id
+        select employee.realname    as employee_name,
+               specialist_info.name as specialist_name,
+               info.id,
+               info.employee_id,
+               info.specialist_id,
+               info.interviewer_start_time,
+               info.interviewer_end_time,
+               info.interview_place,
+               info.create_by,
+               info.create_time
+        from nl_employee_intview_info as info,
+             sys_user as employee,
+             nl_specialist_info as specialist_info
+        where info.employee_id = employee.id
+          and info.specialist_id = specialist_info.id
     </select>
 </mapper>

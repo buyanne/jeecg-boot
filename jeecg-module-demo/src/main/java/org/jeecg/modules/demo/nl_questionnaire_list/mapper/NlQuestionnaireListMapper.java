@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 import org.jeecg.modules.demo.nl_questionnaire_list.entity.NlQuestionnaireList;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO;
+import org.jeecg.modules.demo.nl_questionnaire_list.vo.QuestionVO;
 
 /**
  * @Description: 测评问卷生成
@@ -19,4 +20,6 @@ import org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO;
 public interface NlQuestionnaireListMapper extends BaseMapper<NlQuestionnaireList> {
 
     IPage<NlQuestionnaireListVO> getQuestionnairePage(Page<NlQuestionnaireListVO> page, HashMap<String, String> params);
+
+    List<QuestionVO> getQuestionByListId(String listId);
 }

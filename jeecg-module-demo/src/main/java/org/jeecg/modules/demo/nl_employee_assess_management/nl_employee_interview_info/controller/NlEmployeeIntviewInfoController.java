@@ -1,11 +1,13 @@
 package org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.controller;
 
-import java.util.Arrays;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.entity.NlEmployeeIntviewInfo;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.service.INlEmployeeIntviewInfoService;
 
@@ -57,7 +59,7 @@ public class NlEmployeeIntviewInfoController extends JeecgController<NlEmployeeI
         QueryWrapper<NlEmployeeIntviewInfo> queryWrapper = QueryGenerator.initQueryWrapper(nlEmployeeIntviewInfo, req.getParameterMap());
         Page<NlEmployeeIntviewInfo> page = new Page<NlEmployeeIntviewInfo>(pageNo, pageSize);
         IPage<NlEmployeeIntviewInfo> pageList = nlEmployeeIntviewInfoService.page(page, queryWrapper);
-        queryPageListWithName(nlEmployeeIntviewInfo,pageNo,pageSize,req);
+        queryPageListWithName(nlEmployeeIntviewInfo, pageNo, pageSize, req);
         return Result.OK(pageList);
     }
 
@@ -66,9 +68,23 @@ public class NlEmployeeIntviewInfoController extends JeecgController<NlEmployeeI
                                                                       @RequestParam(name = "pageNo", defaultValue = "1") Integer pageNo,
                                                                       @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize,
                                                                       HttpServletRequest req) {
-
         Page<SpecialistInterviewVO> page = new Page<>(pageNo, pageSize);
         IPage<SpecialistInterviewVO> pageList = nlEmployeeIntviewInfoService.listWithName(page);
+
+        boolean flag = Boolean.parseBoolean(req.getParameter("isHasPermission"));
+//        if (!flag) {
+//            LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+//            List<SpecialistInterviewVO> records = pageList.getRecords();
+//            List<SpecialistInterviewVO> records1 = new ArrayList<>();
+//            for (int i = 0; i < records.size(); i++) {
+//                if(records.get(i).getEmployeeId().equals(user.getId())){
+//                    records1.add(records.get(i));
+//                    break;
+//                }
+//            }
+//            pageList.setRecords(records1);
+//        }
+
         return Result.ok(pageList);
     }
 

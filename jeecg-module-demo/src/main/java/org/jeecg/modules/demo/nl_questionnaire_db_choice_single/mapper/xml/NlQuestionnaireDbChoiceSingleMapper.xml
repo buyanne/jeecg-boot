@@ -3,7 +3,7 @@
 <mapper namespace="org.jeecg.modules.demo.nl_questionnaire_db_choice_single.mapper.NlQuestionnaireDbChoiceSingleMapper">
 
     <insert id="add">
-        insert into nl_questionnaired_db_choice_single(question_id, choice_content, choice_score_weight, sort, del_flag)
+        insert into nl_questionnaire_db_choice_single(question_id, choice_content, choice_score_weight, sort, del_flag)
         values (#{questionId},
                 #{choiceContent},
                 #{choiceScoreWeight},
@@ -12,13 +12,13 @@
     </insert>
     <delete id="deleteByQuestionId">
         delete
-        from nl_questionnaired_db_choice_single
+        from nl_questionnaire_db_choice_single
         where question_id = #{questionId}
     </delete>
     <select id="getChoiceByQuestionId"
             resultType="org.jeecg.modules.demo.nl_questionnaire_db_choice_single.entity.NlQuestionnaireDbChoiceSingle">
         select id, question_id, choice_content, choice_score_weight, sort, del_flag
-        from nl_questionnaired_db_choice_single
+        from nl_questionnaire_db_choice_single
         where question_id = #{questionId}
     </select>
 </mapper>

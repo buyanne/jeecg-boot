@@ -31,4 +31,9 @@ public class NlEmployeeReviewServiceImpl extends ServiceImpl<NlEmployeeReviewMap
         return res;
     }
 
+    @Override
+    public void updateByInfoId(NlEmployeeReview review) {
+        this.baseMapper.updateByInfoId(review);
+    }
+
 }

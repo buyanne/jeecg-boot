@@ -6,6 +6,7 @@ import org.jeecg.modules.demo.nl_questionnaire_index.mapper.NlQuestionnaireIndex
 import org.jeecg.modules.demo.nl_questionnaire_list.entity.NlQuestionnaireList;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO;
+import org.jeecg.modules.demo.nl_questionnaire_list.vo.QuestionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
@@ -30,4 +31,6 @@ public interface INlQuestionnaireListService extends IService<NlQuestionnaireLis
     void removeByIdWithQuestion(String id);
 
     void removeByIdsWithQuestion(List<String> ids);
+
+    List<QuestionVO> getQuestionByListId(String listId);
 }

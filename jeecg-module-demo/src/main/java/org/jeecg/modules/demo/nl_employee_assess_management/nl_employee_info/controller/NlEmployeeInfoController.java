@@ -149,22 +149,6 @@ public class NlEmployeeInfoController extends JeecgController<NlEmployeeInfo, IN
         return Result.OK("批量删除成功!");
     }
 
-    /**
-     * 通过id查询
-     *
-     * @param id
-     * @return
-     */
-    @AutoLog(value = "个体特征确认-通过id查询")
-    @ApiOperation(value = "个体特征确认-通过id查询", notes = "个体特征确认-通过id查询")
-    @GetMapping(value = "/queryById")
-    public Result<NlEmployeeInfo> queryById(@RequestParam(name = "id", required = true) String id) {
-        NlEmployeeInfo nlEmployeeInfo = employeeInfoService.getById(id);
-        if (nlEmployeeInfo == null) {
-            return Result.error("未找到对应数据");
-        }
-        return Result.OK(nlEmployeeInfo);
-    }
 
     /**
      * 导出excel
@@ -205,6 +189,20 @@ public class NlEmployeeInfoController extends JeecgController<NlEmployeeInfo, IN
             this.employeeInfoService.save(info);
             res = this.employeeInfoService.getInfoByEmployeeIdWithName(employeeId);
         }
+        return Result.ok(res);
+    }
+
+    /**
+     * 通过id查询
+     *
+     * @param id
+     * @return
+     */
+    @AutoLog(value = "个体特征确认-通过id查询")
+    @ApiOperation(value = "个体特征确认-通过id查询", notes = "个体特征确认-通过id查询")
+    @GetMapping(value = "/queryById")
+    public Result<EmployeeInfoVO> queryById(@RequestParam(name = "id", required = true) String id) {
+        EmployeeInfoVO res = this.employeeInfoService.getInfoByEmployeeIdWithName(id);
         return Result.ok(res);
     }
 }

@@ -20,4 +20,6 @@ import java.util.Map;
 @Repository
 public interface NlEmployeeReviewMapper extends BaseMapper<NlEmployeeReview> {
     Page<NlReviewVO> getEmployeeReviewWithName(Page<NlReviewVO> page, Map<String,Object> params);
+
+    void updateByInfoId(NlEmployeeReview review);
 }

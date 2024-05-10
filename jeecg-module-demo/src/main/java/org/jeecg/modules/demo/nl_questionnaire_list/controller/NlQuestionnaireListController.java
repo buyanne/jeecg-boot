@@ -1,6 +1,5 @@
 package org.jeecg.modules.demo.nl_questionnaire_list.controller;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO;
 import org.jeecg.common.system.base.controller.JeecgController;
+import org.jeecg.modules.demo.nl_questionnaire_list.vo.QuestionVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -39,7 +39,7 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 @Slf4j
 public class NlQuestionnaireListController extends JeecgController<NlQuestionnaireList, INlQuestionnaireListService> {
     @Autowired
-    private INlQuestionnaireListService nlQuestionnaireListService;
+    private INlQuestionnaireListService questionnaireListService;
 
     /**
      * 分页列表查询
@@ -60,7 +60,7 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
                                                             HttpServletRequest req) {
         QueryWrapper<NlQuestionnaireList> queryWrapper = QueryGenerator.initQueryWrapper(nlQuestionnaireList, req.getParameterMap());
         Page<NlQuestionnaireList> page = new Page<NlQuestionnaireList>(pageNo, pageSize);
-        IPage<NlQuestionnaireList> pageList = nlQuestionnaireListService.page(page, queryWrapper);
+        IPage<NlQuestionnaireList> pageList = questionnaireListService.page(page, queryWrapper);
         return Result.OK(pageList);
     }
 
@@ -76,7 +76,7 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
 
         Page<NlQuestionnaireListVO> page = new Page<>(pageNo, pageSize);
 
-        IPage<NlQuestionnaireListVO> pageList = this.nlQuestionnaireListService.getQuestionnairePage(page, params);
+        IPage<NlQuestionnaireListVO> pageList = this.questionnaireListService.getQuestionnairePage(page, params);
         return Result.OK(pageList);
     }
 
@@ -91,7 +91,7 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
     @RequiresPermissions("nl_questionnaire_list:nl_questionnaire_list:add")
     @PostMapping(value = "/add")
     public Result<String> add(@RequestBody NlQuestionnaireList nlQuestionnaireList) {
-        nlQuestionnaireListService.saveWithRandomQuestion(nlQuestionnaireList);
+        questionnaireListService.saveWithRandomQuestion(nlQuestionnaireList);
         return Result.OK("添加成功！");
     }
 
@@ -106,7 +106,7 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
     @RequiresPermissions("nl_questionnaire_list:nl_questionnaire_list:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<String> edit(@RequestBody NlQuestionnaireList nlQuestionnaireList) {
-        nlQuestionnaireListService.updateWithQuestion(nlQuestionnaireList);
+        questionnaireListService.updateWithQuestion(nlQuestionnaireList);
         return Result.OK("编辑成功!");
     }
 
@@ -121,7 +121,7 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
     @RequiresPermissions("nl_questionnaire_list:nl_questionnaire_list:delete")
     @DeleteMapping(value = "/delete")
     public Result<String> delete(@RequestParam(name = "id", required = true) String id) {
-        nlQuestionnaireListService.removeByIdWithQuestion(id);
+        questionnaireListService.removeByIdWithQuestion(id);
         return Result.OK("删除成功!");
     }
 
@@ -137,7 +137,7 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
     @DeleteMapping(value = "/deleteBatch")
     public Result<String> deleteBatch(@RequestParam(name = "ids", required = true) String ids) {
         List<String> list = Arrays.asList(ids.split(","));
-        this.nlQuestionnaireListService.removeByIdsWithQuestion(list);
+        this.questionnaireListService.removeByIdsWithQuestion(list);
 //        this.nlQuestionnaireListService.removeByIds(Arrays.asList(ids.split(",")));
         return Result.OK("批量删除成功!");
     }
@@ -152,12 +152,21 @@ public class NlQuestionnaireListController extends JeecgController<NlQuestionnai
     @ApiOperation(value = "测评问卷生成-通过id查询", notes = "测评问卷生成-通过id查询")
     @GetMapping(value = "/queryById")
     public Result<NlQuestionnaireList> queryById(@RequestParam(name = "id", required = true) String id) {
-        NlQuestionnaireList nlQuestionnaireList = nlQuestionnaireListService.getById(id);
+        NlQuestionnaireList nlQuestionnaireList = questionnaireListService.getById(id);
         if (nlQuestionnaireList == null) {
             return Result.error("未找到对应数据");
         }
         return Result.OK(nlQuestionnaireList);
     }
+
+    @ApiOperation(value = "测评问卷生成-预览题目列表", notes = "测评问卷生成-预览题目列表")
+    @GetMapping(value = "queryQuestionListByListId")
+    public Result<List<QuestionVO>> queryQuestionListByListId(@RequestParam(name = "id", required = true) String listId) {
+        List<QuestionVO> res=this.questionnaireListService.getQuestionByListId(listId);
+        return Result.ok(res);
+    }
+
+
 
     /**
      * 导出excel
