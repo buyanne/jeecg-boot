@@ -223,6 +223,7 @@ public class NlQuestionnaireListServiceImpl extends ServiceImpl<NlQuestionnaireL
             nlQuestionnaireList.setSingleNum(questionNum);
             nlQuestionnaireList.setTotalScore(nlQuestionnaireList.getSingleScore() * nlQuestionnaireList.getSingleNum());
         }
+        nlQuestionnaireList.setQuestionAddTime(new Date());
         this.baseMapper.insert(nlQuestionnaireList);
 
         List<NlQuestionnaireListSingle> insertListSingleList = new ArrayList<>();

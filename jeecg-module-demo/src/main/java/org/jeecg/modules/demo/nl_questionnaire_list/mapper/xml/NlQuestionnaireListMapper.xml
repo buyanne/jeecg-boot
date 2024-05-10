@@ -16,6 +16,7 @@
             resultType="org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO">
         select
         q_index.index_name,
+        q_index.id,
         plan.plan_name,
         list.*
         from nl_questionnaire_list as list,
@@ -30,7 +31,7 @@
         <if test="params.questionTitle!=null and params.questionTitle!=''">
             and list.question_title=#{params.questionTitle}
         </if>
-
+        order by list.question_add_time desc
     </select>
     <select id="getQuestionByListId" resultMap="questionMap">
         select single.id as `id`,

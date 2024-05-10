@@ -1,16 +1,17 @@
 package org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_review.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.shiro.SecurityUtils;
 import org.jeecg.common.api.vo.Result;
 import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.system.vo.LoginUser;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.service.INlEmployeeInfoService;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.vo.EmployeeInfoVO;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.entity.NlEmployeeIntviewInfo;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.service.INlEmployeeIntviewInfoService;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_review.entity.NlEmployeeReview;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_review.mapper.NlEmployeeReviewMapper;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_review.service.INlEmployeeReviewService;
@@ -46,6 +47,8 @@ public class NlEmployeeReviewController extends JeecgController<NlEmployeeReview
 
     @Autowired
     private INlEmployeeInfoService infoService;
+    @Autowired
+    private INlEmployeeIntviewInfoService intviewInfoService;
 
     /**
      * 分页列表查询
@@ -106,6 +109,12 @@ public class NlEmployeeReviewController extends JeecgController<NlEmployeeReview
         review.setReviewResult(1);
         nlEmployeeReviewService.updateByInfoId(review);
 //        review.setInfoId(employeeInfoVO.getEmployeeId())
+        NlEmployeeIntviewInfo intviewInfo = new NlEmployeeIntviewInfo();
+        intviewInfo.setEmployeeId(employeeId);
+        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+        intviewInfo.setCreateBy(loginUser.getId());
+        intviewInfo.setCreateTime(new Date());
+        intviewInfoService.save(intviewInfo);
         return Result.OK("编辑成功!");
     }
 
