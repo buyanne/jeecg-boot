@@ -83,7 +83,7 @@ public class NlEmployeeIntviewInfoController extends JeecgController<NlEmployeeI
         List<SpecialistInterviewVO> records = pageList.getRecords();
         List<NlSpecialistInfo> specialistInfoList = specialistInfoService.list();
         for (SpecialistInterviewVO record : records) {
-            if (!record.getSpecialistId().isEmpty()) {
+            if (record.getSpecialistId() != null) {
                 for (NlSpecialistInfo nlSpecialistInfo : specialistInfoList) {
                     if (record.getSpecialistId().equals(nlSpecialistInfo.getId())) {
                         record.setSpecialistName(nlSpecialistInfo.getName());

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.jeecg.modules.demo.nl_employee_ability_total.mapper.NlEmployeeAbilityTotalScoreMapper">
+
+    <select id="queryWithName" resultType="org.jeecg.modules.demo.nl_employee_ability_total.vo.AbilityTotalVO">
+        select employee_info.id_num as "idNum",
+               employee.realname as "employeeName",
+               p_info.handle_state as "handleState",
+               p_info.id,
+               p_info.employee_id as 'employeeId'
+        from sys_user as employee,
+             nl_employee_info as employee_info,
+             nl_employee_physiology_info as p_info
+        where employee_info.employee_id = employee.id
+          and p_info.employee_id = employee.id
+    </select>
+</mapper>

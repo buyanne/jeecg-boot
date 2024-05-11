@@ -1,44 +1,27 @@
 package org.jeecg.modules.demo.physiology_info.controller;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.demo.physiology_info.entity.NlEmployeePhysiologyInfo;
-import org.jeecg.modules.demo.physiology_info.service.INlEmployeePhysiologyInfoService;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import lombok.extern.slf4j.Slf4j;
-
-import org.jeecgframework.poi.excel.ExcelImportUtil;
-import org.jeecgframework.poi.excel.def.NormalExcelConstants;
-import org.jeecgframework.poi.excel.entity.ExportParams;
-import org.jeecgframework.poi.excel.entity.ImportParams;
-import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
-import org.jeecg.common.system.base.controller.JeecgController;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
-import com.alibaba.fastjson.JSON;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.jeecg.common.aspect.annotation.AutoLog;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.aspect.annotation.AutoLog;
+import org.jeecg.common.system.base.controller.JeecgController;
+import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.demo.physiology_info.entity.NlEmployeePhysiologyInfo;
+import org.jeecg.modules.demo.physiology_info.service.INlEmployeePhysiologyInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  * @Description: 生理状况测评
@@ -101,17 +84,14 @@ public class NlEmployeePhysiologyInfoController extends JeecgController<NlEmploy
     @ApiOperation(value = "生理状况测评-编辑", notes = "生理状况测评-编辑")
     @RequiresPermissions("physiology_info:nl_employee_physiology_info:edit")
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Result<String> edit(@RequestBody NlEmployeePhysiologyInfo nlEmployeePhysiologyInfo) {
-        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        NlEmployeePhysiologyInfo byEmployeeId = nlEmployeePhysiologyInfoService.getByEmployeeId(loginUser.getId());
-        if (byEmployeeId == null) {
-            nlEmployeePhysiologyInfo.setEmployeeId(loginUser.getId());
-            nlEmployeePhysiologyInfoService.save(nlEmployeePhysiologyInfo);
-        } else {
-            nlEmployeePhysiologyInfo.setId(byEmployeeId.getId());
-            nlEmployeePhysiologyInfoService.updateById(nlEmployeePhysiologyInfo);
-        }
-//        nlEmployeePhysiologyInfoService.updateById(nlEmployeePhysiologyInfo);
+    public Result<String> edit(@RequestBody NlEmployeePhysiologyInfo nlEmployeePhysiologyInfo, HttpServletRequest request) {
+
+        String employeeId=nlEmployeePhysiologyInfo.getEmployeeId();
+
+        NlEmployeePhysiologyInfo byEmployeeId = this.nlEmployeePhysiologyInfoService.getByEmployeeId(employeeId);
+        nlEmployeePhysiologyInfo.setId(byEmployeeId.getId());
+        nlEmployeePhysiologyInfo.setEmployeeId(employeeId);
+        this.nlEmployeePhysiologyInfoService.updateById(nlEmployeePhysiologyInfo);
         return Result.OK("编辑成功!");
     }
 
@@ -155,16 +135,24 @@ public class NlEmployeePhysiologyInfoController extends JeecgController<NlEmploy
     @ApiOperation(value = "生理状况测评-通过id查询", notes = "生理状况测评-通过id查询")
     @GetMapping(value = "/queryById")
     public Result<NlEmployeePhysiologyInfo> queryById(@RequestParam(name = "id", required = true) String id) {
-        LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-        String employeeId = loginUser.getId();
-        NlEmployeePhysiologyInfo nlEmployeePhysiologyInfo = nlEmployeePhysiologyInfoService.getByEmployeeId(employeeId);
-        if (nlEmployeePhysiologyInfo == null) {
-            nlEmployeePhysiologyInfo.setEmployeeId(id);
-            nlEmployeePhysiologyInfoService.save(nlEmployeePhysiologyInfo);
+        if ("-1".equals(id)) {
+            LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();
+            String employeeId = loginUser.getId();
+            NlEmployeePhysiologyInfo nlEmployeePhysiologyInfo = nlEmployeePhysiologyInfoService.getByEmployeeId(employeeId);
+            if (nlEmployeePhysiologyInfo == null) {
+                nlEmployeePhysiologyInfo = new NlEmployeePhysiologyInfo();
+                nlEmployeePhysiologyInfo.setEmployeeId(employeeId);
+                nlEmployeePhysiologyInfoService.save(nlEmployeePhysiologyInfo);
 
 //            return Result.error("未找到对应数据");
+            }
+            return Result.OK(nlEmployeePhysiologyInfo);
+        } else {
+            String employeeid = id;
+            NlEmployeePhysiologyInfo byEmployeeId = this.nlEmployeePhysiologyInfoService.getByEmployeeId(employeeid);
+            return Result.ok(byEmployeeId);
         }
-        return Result.OK(nlEmployeePhysiologyInfo);
+
     }
 
     /**

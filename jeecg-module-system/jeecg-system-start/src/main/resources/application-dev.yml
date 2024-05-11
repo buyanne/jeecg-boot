@@ -63,11 +63,11 @@ spring:
     job-store-type: jdbc
     initialize-schema: embedded
     #定时任务启动开关，true-开  false-关
-    auto-startup: false
+    auto-startup: true
     #延迟1秒启动定时任务
     startup-delay: 1s
     #启动时更新己存在的Job
-    overwrite-existing-jobs: false
+    overwrite-existing-jobs: true
     properties:
       org:
         quartz:
@@ -83,9 +83,9 @@ spring:
             clusterCheckinInterval: 15000
           threadPool:
             class: org.quartz.simpl.SimpleThreadPool
-            threadCount: 1
+            threadCount: 10
             threadPriority: 5
-            threadsInheritContextClassLoaderOfInitializingThread: false
+            threadsInheritContextClassLoaderOfInitializingThread: true
   #json 时间戳统一转换
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
@@ -260,7 +260,7 @@ jeecg:
     address: 127.0.0.1:6379
     password:
     type: STANDALONE
-    enabled: false
+    enabled: true
 #cas单点登录
 cas:
   prefixUrl: http://cas.example.org:8443/cas

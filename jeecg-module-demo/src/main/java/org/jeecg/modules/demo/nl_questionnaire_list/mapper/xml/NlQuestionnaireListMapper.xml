@@ -16,7 +16,6 @@
             resultType="org.jeecg.modules.demo.nl_questionnaire_list.vo.NlQuestionnaireListVO">
         select
         q_index.index_name,
-        q_index.id,
         plan.plan_name,
         list.*
         from nl_questionnaire_list as list,

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.jeecg.common.api.vo.Result;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.entity.NlEmployeeInfo;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_review.entity.NlEmployeeReview;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_review.mapper.NlEmployeeReviewMapper;
 import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_review.service.INlEmployeeReviewService;
@@ -34,6 +35,11 @@ public class NlEmployeeReviewServiceImpl extends ServiceImpl<NlEmployeeReviewMap
     @Override
     public void updateByInfoId(NlEmployeeReview review) {
         this.baseMapper.updateByInfoId(review);
+    }
+
+    @Override
+    public NlEmployeeInfo getByInfoId(Integer infoId) {
+        return this.baseMapper.getByInfoId(infoId);
     }
 
 }

@@ -22,4 +22,10 @@
             and user.realname=#{params.realname}
         </if>
     </select>
+    <select id="getByInfoId"
+            resultType="org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_info.entity.NlEmployeeInfo">
+        select *
+        from nl_employee_review as review
+        where review.info_id = #{infoId}
+    </select>
 </mapper>

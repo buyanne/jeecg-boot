@@ -1,30 +1,22 @@
 package org.jeecg.modules.demo.nl_pyschology_reply.controller;
 
-import java.util.*;
-import java.util.stream.Collectors;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.common.util.oConvertUtils;
-import org.jeecg.modules.demo.nl_politics_reply.dto.ReplyParams;
-import org.jeecg.modules.demo.nl_politics_reply.dto.SelectedChoice;
-import org.jeecg.modules.demo.nl_politics_reply.entity.NlEmployeePoliticsRequestReply;
-import org.jeecg.modules.demo.nl_politics_reply.service.INlEmployeePoliticsRequestReplyService;
-import org.jeecg.modules.demo.nl_pyschology_reply.entity.NlEmployeePyschologyRequestReply;
-import org.jeecg.modules.demo.nl_pyschology_reply.service.INlEmployeePyschologyRequestReplyService;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.aspect.annotation.AutoLog;
+import org.jeecg.common.system.base.controller.JeecgController;
+import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.common.system.vo.LoginUser;
+import org.jeecg.modules.demo.nl_politics_reply.dto.ReplyParams;
+import org.jeecg.modules.demo.nl_politics_reply.dto.SelectedChoice;
+import org.jeecg.modules.demo.nl_pyschology_reply.entity.NlEmployeePyschologyRequestReply;
+import org.jeecg.modules.demo.nl_pyschology_reply.service.INlEmployeePyschologyRequestReplyService;
 import org.jeecg.modules.demo.nl_pyschology_score.entity.NlEmployeePyschologySingleScore;
 import org.jeecg.modules.demo.nl_pyschology_score.service.INlEmployeePyschologySingleScoreService;
 import org.jeecg.modules.demo.nl_questionnaire_db_choice_single.entity.NlQuestionnaireDbChoiceSingle;
@@ -33,24 +25,16 @@ import org.jeecg.modules.demo.nl_questionnaire_db_single.service.INlQuestionnair
 import org.jeecg.modules.demo.nl_questionnaire_list.entity.NlQuestionnaireList;
 import org.jeecg.modules.demo.nl_questionnaire_list.service.INlQuestionnaireListService;
 import org.jeecg.modules.demo.nl_questionnaire_list.vo.QuestionVO;
-import org.jeecg.modules.demo.politics_single_score.entity.NlEmployeePoliticsSingleScore;
-import org.jeecg.modules.demo.politics_single_score.service.INlEmployeePoliticsSingleScoreService;
-import org.jeecgframework.poi.excel.ExcelImportUtil;
-import org.jeecgframework.poi.excel.def.NormalExcelConstants;
-import org.jeecgframework.poi.excel.entity.ExportParams;
-import org.jeecgframework.poi.excel.entity.ImportParams;
-import org.jeecgframework.poi.excel.view.JeecgEntityExcelView;
-import org.jeecg.common.system.base.controller.JeecgController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-import com.alibaba.fastjson.JSON;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.jeecg.common.aspect.annotation.AutoLog;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @Description: 心理状况回答表
@@ -65,8 +49,6 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class NlEmployeePyschologyRequestReplyController extends JeecgController<NlEmployeePyschologyRequestReply, INlEmployeePyschologyRequestReplyService> {
     @Autowired
     private INlEmployeePyschologyRequestReplyService nlEmployeePyschologyRequestReplyService;
-    @Autowired
-    private INlEmployeePoliticsRequestReplyService nlEmployeePoliticsRequestReplyService;
 
     @Autowired
     private INlQuestionnaireListService questionnaireListService;
