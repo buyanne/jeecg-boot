@@ -3,7 +3,6 @@
 <mapper namespace="org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.mapper.NlEmployeeIntviewInfoMapper">
     <select id="listWithName" resultType="org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.vo.SpecialistInterviewVO">
         select employee.realname    as employee_name,
-               specialist_info.name as specialist_name,
                info.id,
                info.employee_id,
                info.specialist_id,
@@ -13,9 +12,9 @@
                info.create_by,
                info.create_time
         from nl_employee_intview_info as info,
-             sys_user as employee,
-             nl_specialist_info as specialist_info
+             sys_user as employee
         where info.employee_id = employee.id
-          and info.specialist_id = specialist_info.id
+
+
     </select>
 </mapper>

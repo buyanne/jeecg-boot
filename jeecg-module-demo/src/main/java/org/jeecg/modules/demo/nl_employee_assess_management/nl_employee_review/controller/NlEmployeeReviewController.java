@@ -109,6 +109,7 @@ public class NlEmployeeReviewController extends JeecgController<NlEmployeeReview
         review.setReviewResult(1);
         nlEmployeeReviewService.updateByInfoId(review);
 //        review.setInfoId(employeeInfoVO.getEmployeeId())
+//        审核通过添加面试信息
         NlEmployeeIntviewInfo intviewInfo = new NlEmployeeIntviewInfo();
         intviewInfo.setEmployeeId(employeeId);
         LoginUser loginUser = (LoginUser) SecurityUtils.getSubject().getPrincipal();

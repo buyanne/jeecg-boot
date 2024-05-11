@@ -2,4 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.jeecg.modules.demo.nl_employee_management_assessment.mapper.NlEmployeeManagementAssessmentMapper">
 
+    <select id="listWithName"
+            resultType="org.jeecg.modules.demo.nl_employee_management_assessment.vo.OrgManagementVO">
+
+        select men.id,
+        men.employee_id as 'employeeId',
+        info.id_num as 'idNum',
+        men.plan_id,
+        men.leadership_score,
+        men.org_coordination_score,
+        men.communication_score,
+        men.specialist_id as 'specialistId',
+        employee.realname as 'employeeName',
+        s_info.name as 'specialistName'
+        from nl_employee_management_assessment as men,
+        sys_user as employee,
+        nl_specialist_info as s_info,
+        nl_employee_info as info
+        where men.employee_id = employee.id
+        and men.specialist_id = s_info.id
+        and men.employee_id=info.employee_id
+        <if test="params.employeeName!=null and params.employeeName!=''">
+            and employee.realname like concat('%',#{params.employeeName},'%')
+        </if>
+    </select>
+    <select id="getByEmployeeid"
+            resultType="org.jeecg.modules.demo.nl_employee_management_assessment.entity.NlEmployeeManagementAssessment">
+        select *
+        from nl_employee_management_assessment
+        where employee_id = #{employeeId}
+    </select>
 </mapper>

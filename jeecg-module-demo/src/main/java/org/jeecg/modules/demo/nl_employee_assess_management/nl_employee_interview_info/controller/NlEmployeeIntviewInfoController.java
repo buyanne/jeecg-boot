@@ -1,30 +1,31 @@
 package org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.controller;
 
-import java.util.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.shiro.SecurityUtils;
-import org.jeecg.common.api.vo.Result;
-import org.jeecg.common.system.query.QueryGenerator;
-import org.jeecg.common.system.vo.LoginUser;
-import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.entity.NlEmployeeIntviewInfo;
-import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.service.INlEmployeeIntviewInfoService;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-
-import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.vo.SpecialistInterviewVO;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.jeecg.common.api.vo.Result;
+import org.jeecg.common.aspect.annotation.AutoLog;
 import org.jeecg.common.system.base.controller.JeecgController;
+import org.jeecg.common.system.query.QueryGenerator;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.entity.NlEmployeeIntviewInfo;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.service.INlEmployeeIntviewInfoService;
+import org.jeecg.modules.demo.nl_employee_assess_management.nl_employee_interview_info.vo.SpecialistInterviewVO;
+import org.jeecg.modules.demo.nl_employee_management_assessment.entity.NlEmployeeManagementAssessment;
+import org.jeecg.modules.demo.nl_employee_management_assessment.service.INlEmployeeManagementAssessmentService;
+import org.jeecg.modules.demo.specialist.entity.NlSpecialistInfo;
+import org.jeecg.modules.demo.specialist.service.INlSpecialistInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.jeecg.common.aspect.annotation.AutoLog;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @Description: 专家面试预约
@@ -39,6 +40,14 @@ import org.apache.shiro.authz.annotation.RequiresPermissions;
 public class NlEmployeeIntviewInfoController extends JeecgController<NlEmployeeIntviewInfo, INlEmployeeIntviewInfoService> {
     @Autowired
     private INlEmployeeIntviewInfoService nlEmployeeIntviewInfoService;
+
+
+    @Autowired
+    private INlEmployeeManagementAssessmentService employeeManagementAssessmentService;
+
+
+    @Autowired
+    private INlSpecialistInfoService specialistInfoService;
 
     /**
      * 分页列表查询
@@ -71,19 +80,19 @@ public class NlEmployeeIntviewInfoController extends JeecgController<NlEmployeeI
         Page<SpecialistInterviewVO> page = new Page<>(pageNo, pageSize);
         IPage<SpecialistInterviewVO> pageList = nlEmployeeIntviewInfoService.listWithName(page);
 
-        boolean flag = Boolean.parseBoolean(req.getParameter("isHasPermission"));
-//        if (!flag) {
-//            LoginUser user = (LoginUser) SecurityUtils.getSubject().getPrincipal();
-//            List<SpecialistInterviewVO> records = pageList.getRecords();
-//            List<SpecialistInterviewVO> records1 = new ArrayList<>();
-//            for (int i = 0; i < records.size(); i++) {
-//                if(records.get(i).getEmployeeId().equals(user.getId())){
-//                    records1.add(records.get(i));
-//                    break;
-//                }
-//            }
-//            pageList.setRecords(records1);
-//        }
+        List<SpecialistInterviewVO> records = pageList.getRecords();
+        List<NlSpecialistInfo> specialistInfoList = specialistInfoService.list();
+        for (SpecialistInterviewVO record : records) {
+            if (!record.getSpecialistId().isEmpty()) {
+                for (NlSpecialistInfo nlSpecialistInfo : specialistInfoList) {
+                    if (record.getSpecialistId().equals(nlSpecialistInfo.getId())) {
+                        record.setSpecialistName(nlSpecialistInfo.getName());
+                        break;
+                    }
+                }
+            }
+        }
+        pageList.setRecords(records);
 
         return Result.ok(pageList);
     }
@@ -115,6 +124,19 @@ public class NlEmployeeIntviewInfoController extends JeecgController<NlEmployeeI
     @RequestMapping(value = "/edit", method = {RequestMethod.PUT, RequestMethod.POST})
     public Result<String> edit(@RequestBody NlEmployeeIntviewInfo nlEmployeeIntviewInfo) {
         nlEmployeeIntviewInfoService.updateById(nlEmployeeIntviewInfo);
+        String employeeId = nlEmployeeIntviewInfo.getEmployeeId();
+        Integer specialistId = nlEmployeeIntviewInfo.getSpecialistId();
+        NlEmployeeManagementAssessment byEmployeeId = employeeManagementAssessmentService.getByEmployeeId(employeeId);
+        if (byEmployeeId == null) {
+            NlEmployeeManagementAssessment nlEmployeeManagementAssessment = new NlEmployeeManagementAssessment();
+            nlEmployeeManagementAssessment.setEmployeeId(employeeId);
+            nlEmployeeManagementAssessment.setSpecialistId(String.valueOf(specialistId));
+            employeeManagementAssessmentService.save(nlEmployeeManagementAssessment);
+
+        } else {
+            byEmployeeId.setSpecialistId(String.valueOf(specialistId));
+            employeeManagementAssessmentService.updateById(byEmployeeId);
+        }
         return Result.OK("编辑成功!");
     }
 
